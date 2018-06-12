@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty,ListProperty,StringProperty,NumericPr
 from kivy.network.urlrequest import UrlRequest
 import json
 from kivy.uix.listview import ListItemButton
+import argparse
 
 
 class LocationButton(ListItemButton):
@@ -20,7 +21,19 @@ class CurrentWeather(BoxLayout):
 	def update_weather(self):
 		weather_template="http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric"
 		weather_url=weather_template.format(*self.location)
-		request=UrlRequest(weather_url,self.weather_retrieved)
+		request=UrlRequest(weather_url,_on_success=self.weather_retrieved,_on_redirect=self._on_redirect,_on_failure=self._on_failure,_on_error=self._on_error)
+
+	def _on_error(self, *largs):
+		print("---- ERROR ----")
+		print(largs)
+
+	def _on_redirect(self, *largs):
+		print("---- REDIRECT ----")
+    	print(largs)
+
+	def _on_failure(self, *largs):
+		print("---- FAILURE ----")
+    	print(largs)
 
 	def weather_retrieved(self, request, data):
 		data = json.loads(data.decode()) if not isinstance(data, dict) else data
