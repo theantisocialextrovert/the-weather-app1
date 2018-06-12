@@ -29,11 +29,11 @@ class CurrentWeather(BoxLayout):
 
 	def _on_redirect(self, *largs):
 		print("---- REDIRECT ----")
-    	print(largs)
+    	        print(largs)
 
 	def _on_failure(self, *largs):
 		print("---- FAILURE ----")
-    	print(largs)
+    	        print(largs)
 
 	def weather_retrieved(self, request, data):
 		data = json.loads(data.decode()) if not isinstance(data, dict) else data
